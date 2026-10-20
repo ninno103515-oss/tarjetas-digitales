@@ -1,0 +1,20 @@
+{
+  "name": "tarjetas-digitales",
+  "version": "1.0.0",
+  "description": "Tarjetas digitales de asesores",
+  "scripts": {
+    "generar": "node generar.js",
+    "probar": "node probar.js",
+    "ver": "node ver.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.33.5"
+  },
+  "private": true
+}

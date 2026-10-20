@@ -1,0 +1,61 @@
+{
+  "sitio": {
+    "urlBase": "https://ninno103515-oss.github.io/tarjetas-digitales",
+    "empresa": "Elektra",
+    "logo": "recursos/logo-elektra.png"
+  },
+  "asesores": [
+    {
+      "ruta": "adrian-olguin",
+      "publicar": true,
+      "nombre": "Adrián",
+      "apellidos": "Olguín Hilario",
+      "puesto": "Asesor especializado en Ventas a Crédito al Consumo",
+      "sucursal": "Elektra Tláhuac del Mar",
+      "whatsapp": "5532387771",
+      "telefono": "5532387771",
+      "mensajeWhatsApp": "Hola Adrián Olguín, vi tu tarjeta digital y quiero información sobre un crédito",
+      "mapa": "https://maps.app.goo.gl/Xfsjb3hLAeVoWQBUA",
+      "linkCredito": "https://bazsolicitudunica.com.mx/pages/intro?iP=39&sub=1&met=7&epm=166013&spm=5784&cpm=1&ppm=1",
+      "horario": "Lunes a domingo, 9:00 a 21:00",
+      "productos": ["movilidad", "hogar", "conectividad"],
+      "requisitos": ["INE vigente", "Comprobante de domicilio", "Número de celular"],
+      "foto": "recursos/fotos/adrian-olguin-original.jpg",
+      "fotoRecorte": { "izquierda": 0, "arriba": 290, "tamano": 900 }
+    },
+    {
+      "ruta": "juan-perez",
+      "publicar": false,
+      "nombre": "Juan",
+      "apellidos": "Pérez (EJEMPLO)",
+      "puesto": "Asesor de Ventas a Crédito",
+      "sucursal": "[SUCURSAL DE EJEMPLO]",
+      "whatsapp": "5500000000",
+      "telefono": "5500000000",
+      "mensajeWhatsApp": "Hola Juan, vi tu tarjeta digital y quiero información sobre un crédito",
+      "mapa": "[FALTA LINK DE GOOGLE MAPS]",
+      "linkCredito": "[FALTA LINK DE CRÉDITO CON CÓDIGO DE ASESOR]",
+      "horario": "Lunes a sábado, 10:00 a 20:00",
+      "productos": ["movilidad", "hogar"],
+      "requisitos": ["INE vigente", "Comprobante de domicilio", "Número de celular"],
+      "foto": ""
+    },
+    {
+      "ruta": "maria-lopez",
+      "publicar": false,
+      "nombre": "María",
+      "apellidos": "López (EJEMPLO)",
+      "puesto": "Asesora de Ventas a Crédito",
+      "sucursal": "[SUCURSAL DE EJEMPLO]",
+      "whatsapp": "5511111111",
+      "telefono": "5511111111",
+      "mensajeWhatsApp": "Hola María, vi tu tarjeta digital y quiero información sobre un crédito",
+      "mapa": "[FALTA LINK DE GOOGLE MAPS]",
+      "linkCredito": "[FALTA LINK DE CRÉDITO CON CÓDIGO DE ASESOR]",
+      "horario": "Lunes a domingo, 9:00 a 21:00",
+      "productos": ["conectividad", "hogar"],
+      "requisitos": ["INE vigente", "Comprobante de domicilio"],
+      "foto": ""
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{nombreCompleto}} · {{empresa}}</title>
+  <meta name="description" content="{{puesto}} · {{sucursal}}. Escríbeme por WhatsApp o inicia tu solicitud de crédito.">
+  <meta name="theme-color" content="#FEDD00">
+  <link rel="canonical" href="{{urlTarjeta}}">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="{{nombreCompleto}} · {{empresa}}">
+  <meta property="og:description" content="{{puesto}} · {{sucursal}}">
+  <meta property="og:url" content="{{urlTarjeta}}">
+  <meta property="og:image" content="{{ogImagen}}">
+  <link rel="icon" type="image/png" href="../logo-elektra.png">
+  <link rel="stylesheet" href="../estilos.css">
+</head>
+<body>
+  <main class="tarjeta">
+    <header class="cabecera">
+      <img class="logo" src="../logo-elektra.png" alt="{{empresa}}" width="798" height="448">
+    </header>
+
+    <section class="perfil">
+      {{fotoHtml}}
+      <h1>{{nombreCompleto}}</h1>
+      <p class="puesto">{{puesto}}</p>
+      <p class="sucursal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>{{sucursal}}</p>
+      {{aviso}}
+    </section>
+
+    <nav class="botones" aria-label="Contacto">
+      {{botones}}
+    </nav>
+
+    <section class="bloque">
+      <h2>Crédito en tienda para</h2>
+      <ul class="productos">
+        {{productosHtml}}
+      </ul>
+    </section>
+
+    <section class="bloque">
+      <h2>Requisitos</h2>
+      <ul class="requisitos">
+        {{requisitosHtml}}
+      </ul>
+      <p class="nota">Sujeto a aprobación de crédito.</p>
+    </section>
+
+    <section class="bloque horario">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <div>
+        <h2>Horario de atención</h2>
+        <p>{{horario}}</p>
+      </div>
+    </section>
+
+    <footer class="pie">Tarjeta digital · {{sucursal}}</footer>
+  </main>
+
+  <div class="aviso-flotante" id="aviso" role="status" aria-live="polite"></div>
+  <script src="../tarjeta.js"></script>
+</body>
+</html>
