@@ -15,16 +15,15 @@
   <link rel="icon" type="image/png" href="../sol-elektra.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap">
   <link rel="stylesheet" href="../estilos.css">
+  {{estilosExtra}}
 </head>
 <body>
   <main class="tarjeta">
-    <div class="marcas-agua" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-
     <header class="cabecera">
       <img class="logo" src="../logo-elektra.png" alt="{{empresa}}">
-      <img class="logo-banco" src="../banco-azteca.png" alt="Banco Azteca" width="250" height="99">
+      <span class="placa-banco"><img src="../banco-azteca.png" alt="Banco Azteca" width="250" height="99"></span>
     </header>
 
     <section class="perfil">
@@ -36,7 +35,11 @@
       {{aviso}}
     </section>
 
-    <nav class="botones" aria-label="Contacto">
+    <nav class="cuadros" aria-label="Contacto">
+      {{cuadros}}
+    </nav>
+
+    <nav class="botones" aria-label="Más opciones">
       {{botones}}
     </nav>
 

@@ -21,16 +21,19 @@ const urlBase = config.sitio.urlBase.replace(/\/+$/, '');
 const PRODUCTOS = {
   movilidad: {
     titulo: 'Movilidad',
+    imagen: 'movilidad.png',
     detalle: 'Motos y bicicletas',
     icono: '<circle cx="5.5" cy="16.5" r="3"/><circle cx="18.5" cy="16.5" r="3"/><path d="M5.5 16.5L9 10h5l4.5 6.5"/><path d="M14 10l-1.5-4H16"/><path d="M7 10h4"/>'
   },
   hogar: {
     titulo: 'Hogar',
+    imagen: 'hogar.png',
     detalle: 'Muebles, línea blanca y electrodomésticos',
     icono: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>'
   },
   conectividad: {
     titulo: 'Conectividad',
+    imagen: 'conectividad.png',
     detalle: 'Celulares, tablets y laptops',
     icono: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>'
   }
@@ -58,11 +61,16 @@ const doblar = (linea) => { // las líneas largas se parten en renglones que emp
   return partes.join('\r\n ');
 };
 function crearVCard(a, urlTarjeta, fotoBase64) {
+  // Nombre con el que se sugiere guardar el contacto (ej. "Adrián Elektra"); se cambia con "nombreContacto"
+  const comoContacto = a.nombreContacto || `${a.nombre} ${config.sitio.empresa}`;
+  const partes = comoContacto.trim().split(/\s+/);
+  const apellidoContacto = partes.length > 1 ? partes.pop() : '';
+  const nombreContacto = partes.join(' ');
   const lineas = [
     'BEGIN:VCARD',
     'VERSION:3.0',
-    `N:${vEscapar(a.apellidos)};${vEscapar(a.nombre)};;;`,
-    `FN:${vEscapar(`${a.nombre} ${a.apellidos}`)}`,
+    `N:${vEscapar(apellidoContacto)};${vEscapar(nombreContacto)};;;`,
+    `FN:${vEscapar(comoContacto)}`,
     `ORG:${vEscapar(a.sucursal)}`,
     `TITLE:${vEscapar(a.puesto)}`,
     `TEL;TYPE=CELL,VOICE:+${telInternacional(a.telefono)}`
@@ -107,14 +115,19 @@ function boton({ clase = '', href, icono, titulo, detalle, externo = true, extra
   return `<a class="boton ${clase}" href="${escapar(href)}"${destino}${extra}><span class="icono" aria-hidden="true">${icono}</span><span class="texto"><strong>${escapar(titulo)}</strong>${detalle ? `<small>${escapar(detalle)}</small>` : ''}</span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>`;
 }
 
+// Recuadro grande con logo (WhatsApp, crédito, ubicación)
+function cuadro({ clase = '', href, icono, titulo }, nombreDato, a) {
+  if (esMarcador(href)) {
+    avisos.push(`  - ${a.ruta}: falta "${nombreDato}" (recuadro "${titulo}" desactivado)`);
+    return `<span class="cuadro falta" aria-disabled="true"><img src="../iconos/${icono}" alt=""><span>${escapar(titulo)}</span><small>${escapar(href || '[FALTA ' + nombreDato.toUpperCase() + ']')}</small></span>`;
+  }
+  return `<a class="cuadro ${clase}" href="${escapar(href)}" target="_blank" rel="noopener"><img src="../iconos/${icono}" alt=""><span>${escapar(titulo)}</span></a>`;
+}
+
 const svg = (interior, relleno = false) => `<svg viewBox="0 0 24 24" class="${relleno ? 'relleno' : ''}">${interior}</svg>`;
 const ICONOS = {
-  whatsapp: svg('<path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.05c-.24.68-1.42 1.3-1.95 1.35-.5.05-.97.24-3.28-.68-2.78-1.1-4.54-3.95-4.68-4.13-.13-.18-1.1-1.47-1.1-2.8 0-1.33.7-1.98.95-2.25.24-.27.53-.33.71-.33l.51.01c.16 0 .39-.06.6.46.24.56.8 1.93.87 2.07.07.14.12.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.12.59-.07.16-.18.68-.8.86-1.07.18-.27.36-.23.6-.14.25.09 1.58.75 1.85.88.27.14.45.2.52.32.07.11.07.66-.17 1.33z"/>', true),
-  credito: svg('<rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/>'),
   telefono: svg('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2z"/>'),
-  mapa: svg('<path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>'),
-  contacto: svg('<circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 3.6-7 8-7 1.4 0 2.7.3 3.8.8"/><path d="M19 14v6M16 17h6"/>'),
-  compartir: svg('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>')
+  contacto: svg('<circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 3.6-7 8-7 1.4 0 2.7.3 3.8.8"/><path d="M19 14v6M16 17h6"/>')
 };
 
 async function generarAsesor(a) {
@@ -150,21 +163,23 @@ async function generarAsesor(a) {
 
   const wa = esMarcador(a.whatsapp) ? a.whatsapp : `https://wa.me/${telInternacional(a.whatsapp)}?text=${encodeURIComponent(a.mensajeWhatsApp || '')}`;
   const tel = esMarcador(a.telefono) ? a.telefono : `tel:+${telInternacional(a.telefono)}`;
-  const nombreArchivoVcf = `${a.nombre}-${a.apellidos.split(' ')[0]}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9-]/g, '') + '.vcf';
+  const nombreArchivoVcf = (a.nombreContacto || `${a.nombre} ${config.sitio.empresa}`).replace(/\s+/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9-]/g, '') + '.vcf';
 
+  const cuadros = [
+    cuadro({ clase: 'cuadro-whatsapp', href: wa, icono: 'whatsapp.png', titulo: 'WhatsApp' }, 'whatsapp', a),
+    cuadro({ clase: 'cuadro-credito', href: a.linkCredito, icono: 'credito.png', titulo: 'Crédito' }, 'linkCredito', a),
+    cuadro({ href: a.mapa, icono: 'ubicacion.png', titulo: 'Ubicación' }, 'mapa', a),
+    `<button class="cuadro" type="button" id="compartir" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`${nombreCompleto} · ${a.puesto} en ${a.sucursal}`)}"><img src="../iconos/compartir.png" alt=""><span>Compartir</span></button>`
+  ].join('\n      ');
   const botones = [
-    boton({ clase: 'boton-whatsapp', href: wa, icono: ICONOS.whatsapp, titulo: `${a.nombre} ${a.apellidos.split(' ')[0]}` }, 'whatsapp', a),
-    boton({ clase: 'boton-credito', href: a.linkCredito, icono: ICONOS.credito, titulo: 'Tramita aquí tu crédito' }, 'linkCredito', a),
-    boton({ href: tel, icono: ICONOS.telefono, titulo: 'Llámame', externo: false }, 'telefono', a),
-    boton({ href: a.mapa, icono: ICONOS.mapa, titulo: 'Cómo llegar' }, 'mapa', a),
-    boton({ href: 'contacto.vcf', icono: ICONOS.contacto, titulo: 'Guardar contacto', externo: false, extra: ` download="${nombreArchivoVcf}"` }, 'contacto', a),
-    `<button class="boton" type="button" id="compartir" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`${nombreCompleto} · ${a.puesto} en ${a.sucursal}`)}"><span class="icono" aria-hidden="true">${ICONOS.compartir}</span><span class="texto"><strong>Compartir</strong></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>`
+    boton({ href: 'contacto.vcf', icono: ICONOS.contacto, titulo: 'Guardar contacto', externo: false, extra: ` download="${nombreArchivoVcf}"` }, 'contacto', a)
   ].join('\n      ');
 
   const productosHtml = (a.productos || []).map((p) => {
     const info = PRODUCTOS[p];
     if (!info) { avisos.push(`  - ${a.ruta}: producto desconocido "${p}" (usa: ${Object.keys(PRODUCTOS).join(', ')})`); return ''; }
-    return `<li><span class="icono-producto" aria-hidden="true">${svg(info.icono)}</span><span><strong>${info.titulo}</strong><small>${info.detalle}</small></span></li>`;
+    const figura = info.imagen && fs.existsSync(path.join(RAIZ, 'recursos', 'productos', info.imagen)) ? `<img class="foto-producto" src="../productos/${info.imagen}" alt="">` : `<span class="icono-producto" aria-hidden="true">${svg(info.icono)}</span>`;
+    return `<li>${figura}<span><strong>${info.titulo}</strong><small>${info.detalle}</small></span></li>`;
   }).join('\n        ');
   const requisitosHtml = (a.requisitos || []).map((r) => `<li>${escapar(r)}</li>`).join('\n        ');
 
@@ -177,9 +192,11 @@ async function generarAsesor(a) {
     urlTarjeta: escapar(urlTarjeta),
     ogImagen: escapar(ogImagen),
     fotoHtml,
+    cuadros,
     botones,
     productosHtml,
     requisitosHtml,
+    estilosExtra: a.compacta ? '<link rel="stylesheet" href="../estilos-compacta.css">' : '',
     aviso: a.publicar ? '' : '<p class="ejemplo">Tarjeta de EJEMPLO · no publicada</p>'
   });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
@@ -195,10 +212,15 @@ async function copiarComunes(destino) {
   fs.mkdirSync(destino, { recursive: true });
   // Logo completo, sin deformar ni cambiar colores; solo se reduce el margen amarillo para que se vea más grande
   await sharp(path.join(RAIZ, config.sitio.logo)).trim({ background: '#FEDD00', threshold: 20 })
-    .extend({ top: 18, bottom: 6, left: 18, right: 18, background: '#FEDD00' }).png().toFile(path.join(destino, 'logo-elektra.png'));
+    .extend({ top: 4, bottom: 4, left: 4, right: 4, background: '#FEDD00' }).png().toFile(path.join(destino, 'logo-elektra.png'));
   fs.copyFileSync(path.join(RAIZ, 'recursos', 'sol-elektra.png'), path.join(destino, 'sol-elektra.png'));
   fs.copyFileSync(path.join(RAIZ, 'recursos', 'banco-azteca.png'), path.join(destino, 'banco-azteca.png'));
+  fs.mkdirSync(path.join(destino, 'productos'), { recursive: true });
+  for (const p of Object.values(PRODUCTOS)) if (p.imagen && fs.existsSync(path.join(RAIZ, 'recursos', 'productos', p.imagen))) fs.copyFileSync(path.join(RAIZ, 'recursos', 'productos', p.imagen), path.join(destino, 'productos', p.imagen));
+  fs.mkdirSync(path.join(destino, 'iconos'), { recursive: true });
+  for (const f of ['whatsapp.png', 'credito.png', 'ubicacion.png', 'compartir.png']) fs.copyFileSync(path.join(RAIZ, 'recursos', 'iconos', f), path.join(destino, 'iconos', f));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos.css'), path.join(destino, 'estilos.css'));
+  fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos-compacta.css'), path.join(destino, 'estilos-compacta.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'tarjeta.js'), path.join(destino, 'tarjeta.js'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'inicio.html'), path.join(destino, 'index.html'));
   fs.writeFileSync(path.join(destino, '.nojekyll'), '');
@@ -215,7 +237,11 @@ async function copiarComunes(destino) {
   await copiarComunes(SALIDA_PUBLICA);
   await copiarComunes(SALIDA_PRUEBA);
 
-  for (const a of config.asesores) await generarAsesor(a);
+  // Cada asesor tiene 2 versiones: la normal (ruta) y la de una sola pantalla (ruta-2)
+  for (const a of config.asesores) {
+    await generarAsesor(a);
+    await generarAsesor({ ...a, ruta: `${a.ruta}-2`, compacta: true });
+  }
 
   if (avisos.length) console.log('\n⚠ Revisa estos datos pendientes:\n' + avisos.join('\n'));
   console.log(`\nListo. Códigos QR para imprimir en: codigos-qr/`);

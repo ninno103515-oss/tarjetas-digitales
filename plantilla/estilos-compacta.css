@@ -1,0 +1,44 @@
+/* Versión 2: toda la tarjeta en una sola pantalla de celular (se carga encima de estilos.css) */
+.tarjeta { padding-bottom: 10px; }
+.cabecera { padding: calc(9px + env(safe-area-inset-top)) 66px 26px; }
+.placa-banco { right: 0; bottom: -24px; padding: 6px 11px; border-radius: 12px 0 0 12px; }
+.placa-banco img { width: 84px; }
+
+/* Foto y texto: bloque centrado */
+.perfil { display: grid; grid-template-columns: auto auto; justify-content: center; column-gap: 14px; align-items: center; text-align: left; padding: 30px 16px 0; }
+.marco { grid-row: 1 / 4; padding: 3px; border-radius: 14px; }
+.foto { width: 84px; height: 105px; border-radius: 11px; border-width: 2px; }
+.perfil h1 { margin: 0; font-size: 19px; align-self: end; }
+.ornamento { display: none; }
+.puesto { font-size: 11.5px; letter-spacing: .08em; margin-top: 4px; }
+.sucursal { margin-top: 6px; padding: 3px 10px; font-size: 12px; justify-self: start; align-self: start; }
+
+/* Cuatro recuadros: imágenes del mismo tamaño en una línea y nombres alineados abajo */
+.cuadros { grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 6px 10px 0; }
+.cuadro { min-height: 0; justify-content: flex-start; padding: 8px 4px 6px; gap: 6px; font-size: 12px; border-radius: 12px; }
+.cuadro img, .cuadro-credito img { width: 50px; height: 40px; max-width: none; object-fit: contain; border-radius: 0; }
+
+.botones { padding: 5px 10px 0; }
+.boton { min-height: 42px; padding: 4px 10px; border-radius: 12px; }
+.botones .icono { flex-basis: 30px; height: 30px; }
+.botones .icono svg { width: 17px; height: 17px; }
+.botones .texto strong { font-size: 14px; }
+
+/* Bloques: títulos y contenido centrados */
+.bloque { margin: 6px 10px 0; padding: 7px 10px; text-align: center; }
+.bloque h2 { font-size: 11.5px; margin-bottom: 6px; text-align: center; }
+.productos { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.productos li { flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.foto-producto { flex: none; width: 100%; height: 66px; object-fit: contain; object-position: center; }
+.productos strong { font-size: 13px; }
+.productos small { display: none; }
+.requisitos { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; }
+.requisitos li { font-size: 12.5px; padding-left: 20px; }
+.requisitos li::before { width: 15px; height: 15px; background-size: 10px; }
+.nota { margin-top: 4px; font-size: 10.5px; }
+.horario { justify-content: center; gap: 10px; }
+.horario > svg { flex-basis: 26px; width: 26px; height: 26px; }
+.horario div { text-align: center; }
+.horario h2 { margin-bottom: 2px; }
+.horario p { font-size: 13px; }
+.pie { display: none; }

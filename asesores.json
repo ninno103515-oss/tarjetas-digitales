@@ -10,18 +10,18 @@
       "publicar": true,
       "nombre": "Adrián",
       "apellidos": "Olguín Hilario",
-      "puesto": "Asesor de Ventas a Crédito",
+      "puesto": "Asesor Préstamo Elektra",
       "sucursal": "Elektra Tláhuac del Mar",
       "whatsapp": "5532387771",
       "telefono": "5532387771",
       "mensajeWhatsApp": "Hola Adrián Olguín, vi tu tarjeta digital y quiero información sobre un crédito",
       "mapa": "https://maps.app.goo.gl/Xfsjb3hLAeVoWQBUA",
       "linkCredito": "https://bazsolicitudunica.com.mx/pages/intro?iP=39&sub=1&met=7&epm=166013&spm=5784&cpm=1&ppm=1",
-      "horario": "Lunes a domingo, 9:00 a 21:00",
-      "productos": ["movilidad", "hogar", "conectividad"],
+      "horario": "Martes a domingo, 9:00 a 21:00",
+      "productos": ["conectividad", "hogar", "movilidad"],
       "requisitos": ["INE vigente", "Comprobante de domicilio", "Número de celular"],
       "foto": "recursos/fotos/adrian-olguin-original.jpg",
-      "fotoRecorte": { "izquierda": 60, "arriba": 250, "ancho": 780, "alto": 975 }
+      "fotoRecorte": { "izquierda": 0, "arriba": 215, "ancho": 900, "alto": 1125 }
     },
     {
       "ruta": "juan-perez",

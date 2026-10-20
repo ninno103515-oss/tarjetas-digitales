@@ -22,7 +22,8 @@ async function revisarLink(nombre, url) {
 
 (async () => {
   const enLinea = process.argv.includes('--en-linea');
-  for (const a of config.asesores) {
+  const lista = config.asesores.flatMap((a) => [a, { ...a, ruta: `${a.ruta}-2` }]);
+  for (const a of lista) {
     const dir = path.join(RAIZ, a.publicar ? 'docs' : 'vista-previa', a.ruta);
     const urlTarjeta = `${urlBase}/${a.ruta}/`;
     console.log(`\n${a.ruta} ${a.publicar ? '' : '(prueba, no se publica)'}`);
@@ -47,7 +48,7 @@ async function revisarLink(nombre, url) {
 
     // Links de los botones
     const html = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
-    const links = [...html.matchAll(/<a class="boton[^"]*" href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
+    const links = [...html.matchAll(/<a class="(?:boton|cuadro)[^"]*" href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
     for (const l of links) {
       if (l.startsWith('tel:')) l === `tel:+52${a.telefono}` ? ok(`Llamar: ${l}`) : mal(`Teléfono raro: ${l}`);
       else if (l.startsWith('http')) await revisarLink(l.split('/')[2], l);

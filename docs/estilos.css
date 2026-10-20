@@ -4,12 +4,12 @@
   --rojo: #ED3024;
   --verde: #1FA855;
   --negro: #0A0A0B;
-  --panel: #151517;
-  --borde: rgba(254, 221, 0, .18);
+  --panel: var(--negro);
+  --borde: transparent;
   --texto: #F4F1E8;
   --gris: #A3A09A;
-  --sombra: 0 10px 30px rgba(0, 0, 0, .55);
-  --gotica: "UnifrakturMaguntia", "Old English Text MT", Georgia, serif;
+  --sombra: none;
+  --gotica: "Arial Black", "Arial Bold", Gadget, sans-serif;
   --titulos: "Cinzel", Georgia, serif;
 }
 
@@ -31,51 +31,43 @@ body {
   margin: 0 auto;
   min-height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(120% 50% at 50% 0%, rgba(237, 48, 36, .22), transparent 70%),
-    radial-gradient(90% 40% at 50% 100%, rgba(254, 221, 0, .07), transparent 70%),
-    var(--negro);
+  background: var(--negro);
   padding-bottom: calc(28px + env(safe-area-inset-bottom));
 }
-.tarjeta > *:not(.marcas-agua) { position: relative; z-index: 1; }
-
-/* Marcas de agua con el sol de la marca */
-.marcas-agua span {
-  position: absolute;
-  z-index: 0;
-  aspect-ratio: 151 / 138;
-  background: url("sol-elektra.png") center / contain no-repeat;
-  opacity: .11;
-  pointer-events: none;
-}
-.marcas-agua span:nth-child(1) { width: 340px; top: 120px; left: -150px; transform: rotate(-18deg); }
-.marcas-agua span:nth-child(2) { width: 260px; top: 640px; right: -120px; transform: rotate(24deg); }
-.marcas-agua span:nth-child(3) { width: 300px; top: 1150px; left: -130px; transform: rotate(40deg); }
-.marcas-agua span:nth-child(4) { width: 220px; top: 1550px; right: -90px; transform: rotate(-30deg); opacity: .09; }
 
 /* Encabezado amarillo de orilla a orilla: Elektra a todo lo ancho y Banco Azteca abajo a la derecha */
 .cabecera {
+  position: relative;
   background: var(--amarillo);
-  padding: env(safe-area-inset-top) 0 12px;
-  border-radius: 0 0 26px 26px;
+  padding: calc(26px + env(safe-area-inset-top)) 22px 26px;
   box-shadow: 0 12px 40px rgba(254, 221, 0, .16);
 }
 .logo { display: block; width: 100%; height: auto; }
-.logo-banco { display: block; width: 108px; height: auto; margin: 6px 18px 0 auto; }
+/* Banco Azteca en placa negra, encimada sobre la orilla inferior del amarillo */
+.placa-banco {
+  position: absolute;
+  right: 16px;
+  bottom: -38px;
+  padding: 9px 14px;
+  background: #000;
+  border-radius: 12px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .6);
+}
+.placa-banco img { display: block; width: 104px; height: auto; }
 
 /* Perfil */
-.perfil { text-align: center; padding: 26px 20px 0; }
+.perfil { text-align: center; padding: 56px 20px 0; }
 .marco {
   display: inline-block;
   padding: 6px;
   border-radius: 22px;
-  background: linear-gradient(160deg, var(--amarillo), var(--rojo) 55%, #5a0f0b);
-  box-shadow: 0 18px 50px rgba(237, 48, 36, .3);
+  background: #000;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .7);
 }
 .foto {
   display: block;
-  width: 216px;
-  height: 270px;
+  width: 176px;
+  height: 220px;
   object-fit: cover;
   object-position: center;
   border-radius: 17px;
@@ -93,8 +85,8 @@ body {
   margin: 20px 0 0;
   font-family: var(--gotica);
   font-weight: 400;
-  font-size: 40px;
-  line-height: 1.1;
+  font-size: 27px;
+  line-height: 1.15;
   color: var(--texto);
   text-shadow: 0 2px 18px rgba(237, 48, 36, .45);
 }
@@ -109,7 +101,7 @@ body {
   font-size: 15px;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--amarillo);
+  color: var(--rojo);
 }
 .sucursal {
   display: inline-flex;
@@ -135,18 +127,58 @@ body {
   font-size: 13px;
 }
 
-/* Botones grandes */
-.botones { display: grid; gap: 12px; padding: 26px 16px 8px; }
+/* Cuatro recuadros con logo */
+.cuadros { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 26px 16px 0; }
+.cuadro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 150px;
+  padding: 16px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  background: var(--panel);
+  color: var(--texto);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease;
+}
+.cuadro:active { transform: scale(.97); }
+.cuadro:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 3px; }
+.cuadro img { width: auto; height: 72px; max-width: 100%; object-fit: contain; }
+.cuadro-credito img { height: auto; width: 100%; max-width: 140px; border-radius: 8px; }
+.cuadro span { white-space: nowrap; }
+.cuadro.falta { opacity: .6; cursor: not-allowed; border: 2px dashed var(--rojo); box-shadow: none; }
+.cuadro.falta small { color: var(--rojo); font-size: 12px; }
+
+/* Botones chicos */
+.botones { display: flex; justify-content: center; padding: 12px 16px 8px; }
+.botones .boton { width: auto; padding-right: 20px; }
+.botones .texto { white-space: nowrap; }
+.botones .boton { min-width: 0; gap: 10px; }
+.botones .flecha { display: none; }
+.botones .icono { flex-basis: 38px; height: 38px; }
+.botones .icono svg { width: 20px; height: 20px; }
+.botones .texto strong { font-size: 15px; }
 .boton {
   display: flex;
   align-items: center;
   gap: 14px;
   width: 100%;
-  min-height: 66px;
-  padding: 10px 14px;
+  min-height: 58px;
+  padding: 8px 12px;
   border: 1px solid var(--borde);
   border-radius: 18px;
-  background: rgba(21, 21, 23, .92);
+  background: var(--negro);
   color: var(--texto);
   font: inherit;
   text-align: left;
@@ -174,12 +206,9 @@ body {
 .texto small { font-size: 13.5px; color: var(--gris); margin-top: 2px; }
 .flecha { flex: 0 0 22px; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: .55; }
 
-.boton-whatsapp { background: var(--verde); border-color: transparent; color: #fff; min-height: 76px; }
-.boton-whatsapp .texto strong { font-size: 20px; }
-.boton-whatsapp .icono { background: rgba(255, 255, 255, .2); color: #fff; }
 .boton-credito { background: var(--rojo); border-color: transparent; color: #fff; min-height: 72px; }
 .boton-credito .icono { background: var(--amarillo); color: var(--rojo); }
-.boton-whatsapp .flecha, .boton-credito .flecha { opacity: .9; }
+.boton-credito .flecha { opacity: .9; }
 
 .boton.falta { opacity: .6; cursor: not-allowed; border: 2px dashed var(--rojo); box-shadow: none; }
 .boton.falta small { color: var(--rojo); font-weight: 700; }
@@ -188,7 +217,7 @@ body {
 .bloque {
   margin: 16px 16px 0;
   padding: 18px;
-  background: rgba(21, 21, 23, .92);
+  background: var(--negro);
   border: 1px solid var(--borde);
   border-radius: 18px;
   box-shadow: var(--sombra);
@@ -200,10 +229,13 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .12em;
-  color: var(--amarillo);
+  color: var(--rojo);
+  text-align: center;
 }
 .productos, .requisitos { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.productos li { display: flex; align-items: center; gap: 12px; }
+.productos { gap: 14px; }
+.productos li { display: flex; align-items: center; gap: 14px; }
+.foto-producto { flex: 0 0 120px; width: 120px; height: 90px; object-fit: contain; }
 .productos strong { display: block; font-size: 16px; }
 .productos small { color: var(--gris); font-size: 13.5px; }
 .icono-producto {
@@ -229,7 +261,8 @@ body {
 }
 .nota { margin: 12px 0 0; font-size: 12.5px; color: var(--gris); }
 
-.horario { display: flex; align-items: center; gap: 14px; }
+.horario { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.horario div { text-align: center; }
 .horario > svg { flex: 0 0 40px; width: 40px; height: 40px; fill: none; stroke: var(--rojo); stroke-width: 2; stroke-linecap: round; }
 .horario h2 { margin-bottom: 2px; }
 .horario p { margin: 0; font-size: 16px; font-weight: 600; }
