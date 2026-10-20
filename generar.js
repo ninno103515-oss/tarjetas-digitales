@@ -104,7 +104,7 @@ function boton({ clase = '', href, icono, titulo, detalle, externo = true, extra
     return `<span class="boton falta" aria-disabled="true"><span class="icono" aria-hidden="true">${icono}</span><span class="texto"><strong>${escapar(titulo)}</strong><small>${escapar(href || '[FALTA ' + nombreDato.toUpperCase() + ']')}</small></span></span>`;
   }
   const destino = externo ? ' target="_blank" rel="noopener"' : '';
-  return `<a class="boton ${clase}" href="${escapar(href)}"${destino}${extra}><span class="icono" aria-hidden="true">${icono}</span><span class="texto"><strong>${escapar(titulo)}</strong><small>${escapar(detalle)}</small></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>`;
+  return `<a class="boton ${clase}" href="${escapar(href)}"${destino}${extra}><span class="icono" aria-hidden="true">${icono}</span><span class="texto"><strong>${escapar(titulo)}</strong>${detalle ? `<small>${escapar(detalle)}</small>` : ''}</span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>`;
 }
 
 const svg = (interior, relleno = false) => `<svg viewBox="0 0 24 24" class="${relleno ? 'relleno' : ''}">${interior}</svg>`;
@@ -126,20 +126,20 @@ async function generarAsesor(a) {
   const nombreCompleto = `${a.nombre} ${a.apellidos}`;
   const urlTarjeta = `${urlBase}/${a.ruta}/`;
 
-  // Foto: recorte cuadrado centrado en la cara
+  // Foto: rectángulo vertical (4:5) centrado en la cara
   let fotoHtml, fotoBase64 = '', ogImagen = `${urlBase}/logo-elektra.png`;
   if (a.foto && fs.existsSync(path.join(RAIZ, a.foto))) {
-    // "fotoRecorte" (opcional): cuadro exacto a recortar, en pixeles de la foto original.
-    // Sin él, se elige automáticamente la parte más llamativa (normalmente la cara).
+    // "fotoRecorte" (opcional): rectángulo exacto a recortar, en pixeles de la foto original
+    // ({ izquierda, arriba, ancho, alto }). Sin él, se elige automáticamente la cara.
     const r = a.fotoRecorte;
     const abrir = () => {
       const img = sharp(path.join(RAIZ, a.foto)).rotate();
-      return r ? img.extract({ left: r.izquierda, top: r.arriba, width: r.tamano, height: r.tamano }) : img;
+      return r ? img.extract({ left: r.izquierda, top: r.arriba, width: r.ancho || r.tamano, height: r.alto || r.tamano }) : img;
     };
     const ajuste = { fit: 'cover', position: r ? 'centre' : sharp.strategy.attention };
-    await abrir().resize(600, 600, ajuste).jpeg({ quality: 82, mozjpeg: true }).toFile(path.join(dir, 'foto.jpg'));
-    fotoBase64 = (await abrir().resize(240, 240, ajuste).jpeg({ quality: 70 }).toBuffer()).toString('base64');
-    fotoHtml = `<img class="foto" src="foto.jpg" alt="Foto de ${escapar(nombreCompleto)}" width="600" height="600">`;
+    await abrir().resize(480, 600, ajuste).jpeg({ quality: 84, mozjpeg: true }).toFile(path.join(dir, 'foto.jpg'));
+    fotoBase64 = (await abrir().resize(240, 240, { fit: 'cover', position: r ? 'north' : sharp.strategy.attention }).jpeg({ quality: 70 }).toBuffer()).toString('base64');
+    fotoHtml = `<img class="foto" src="foto.jpg" alt="Foto de ${escapar(nombreCompleto)}" width="480" height="600">`;
     ogImagen = `${urlTarjeta}foto.jpg`;
   } else {
     if (a.foto) avisos.push(`  - ${a.ruta}: no encontré la foto "${a.foto}"`);
@@ -153,12 +153,12 @@ async function generarAsesor(a) {
   const nombreArchivoVcf = `${a.nombre}-${a.apellidos.split(' ')[0]}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9-]/g, '') + '.vcf';
 
   const botones = [
-    boton({ clase: 'boton-whatsapp', href: wa, icono: ICONOS.whatsapp, titulo: 'Escríbeme por WhatsApp', detalle: 'Te respondo para resolver tus dudas' }, 'whatsapp', a),
-    boton({ clase: 'boton-credito', href: a.linkCredito, icono: ICONOS.credito, titulo: 'Solicita tu crédito', detalle: 'En línea, con mi código de asesor' }, 'linkCredito', a),
-    boton({ href: tel, icono: ICONOS.telefono, titulo: 'Llámame', detalle: telBonito(a.telefono), externo: false }, 'telefono', a),
-    boton({ href: a.mapa, icono: ICONOS.mapa, titulo: 'Cómo llegar', detalle: 'Ver la sucursal en Google Maps' }, 'mapa', a),
-    boton({ href: 'contacto.vcf', icono: ICONOS.contacto, titulo: 'Guardar mi contacto', detalle: 'Agrégame a tu celular', externo: false, extra: ` download="${nombreArchivoVcf}"` }, 'contacto', a),
-    `<button class="boton" type="button" id="compartir" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`${nombreCompleto} · ${a.puesto} en ${a.sucursal}`)}"><span class="icono" aria-hidden="true">${ICONOS.compartir}</span><span class="texto"><strong>Compartir mi tarjeta</strong><small>Envíala a quien la necesite</small></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>`
+    boton({ clase: 'boton-whatsapp', href: wa, icono: ICONOS.whatsapp, titulo: `${a.nombre} ${a.apellidos.split(' ')[0]}` }, 'whatsapp', a),
+    boton({ clase: 'boton-credito', href: a.linkCredito, icono: ICONOS.credito, titulo: 'Tramita aquí tu crédito' }, 'linkCredito', a),
+    boton({ href: tel, icono: ICONOS.telefono, titulo: 'Llámame', externo: false }, 'telefono', a),
+    boton({ href: a.mapa, icono: ICONOS.mapa, titulo: 'Cómo llegar' }, 'mapa', a),
+    boton({ href: 'contacto.vcf', icono: ICONOS.contacto, titulo: 'Guardar contacto', externo: false, extra: ` download="${nombreArchivoVcf}"` }, 'contacto', a),
+    `<button class="boton" type="button" id="compartir" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`${nombreCompleto} · ${a.puesto} en ${a.sucursal}`)}"><span class="icono" aria-hidden="true">${ICONOS.compartir}</span><span class="texto"><strong>Compartir</strong></span><svg class="flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>`
   ].join('\n      ');
 
   const productosHtml = (a.productos || []).map((p) => {
@@ -191,11 +191,14 @@ async function generarAsesor(a) {
   console.log(`✔ ${a.publicar ? 'PUBLICAR ' : 'PRUEBA   '} ${a.ruta.padEnd(20)} ${a.publicar ? urlTarjeta : path.relative(RAIZ, path.join(dir, 'index.html'))}`);
 }
 
-function copiarComunes(destino) {
+async function copiarComunes(destino) {
   fs.mkdirSync(destino, { recursive: true });
+  // Logo completo, sin deformar ni cambiar colores; solo se reduce el margen amarillo para que se vea más grande
+  await sharp(path.join(RAIZ, config.sitio.logo)).trim({ background: '#FEDD00', threshold: 20 })
+    .extend({ top: 30, bottom: 30, left: 44, right: 44, background: '#FEDD00' }).png().toFile(path.join(destino, 'logo-elektra.png'));
+  fs.copyFileSync(path.join(RAIZ, 'recursos', 'sol-elektra.png'), path.join(destino, 'sol-elektra.png'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos.css'), path.join(destino, 'estilos.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'tarjeta.js'), path.join(destino, 'tarjeta.js'));
-  fs.copyFileSync(path.join(RAIZ, config.sitio.logo), path.join(destino, 'logo-elektra.png'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'inicio.html'), path.join(destino, 'index.html'));
   fs.writeFileSync(path.join(destino, '.nojekyll'), '');
 }
@@ -208,8 +211,8 @@ function copiarComunes(destino) {
   }
   // Se borran y se vuelven a crear las carpetas generadas (no edites nada a mano dentro de ellas)
   for (const d of [SALIDA_PUBLICA, SALIDA_PRUEBA, CARPETA_QR]) fs.rmSync(d, { recursive: true, force: true });
-  copiarComunes(SALIDA_PUBLICA);
-  copiarComunes(SALIDA_PRUEBA);
+  await copiarComunes(SALIDA_PUBLICA);
+  await copiarComunes(SALIDA_PRUEBA);
 
   for (const a of config.asesores) await generarAsesor(a);
 

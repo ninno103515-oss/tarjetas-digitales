@@ -4,26 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{{nombreCompleto}} · {{empresa}}</title>
-  <meta name="description" content="{{puesto}} · {{sucursal}}. Escríbeme por WhatsApp o inicia tu solicitud de crédito.">
-  <meta name="theme-color" content="#FEDD00">
+  <meta name="description" content="{{puesto}} · {{sucursal}}. Escríbeme por WhatsApp o tramita aquí tu crédito.">
+  <meta name="theme-color" content="#0A0A0B">
   <link rel="canonical" href="{{urlTarjeta}}">
   <meta property="og:type" content="profile">
   <meta property="og:title" content="{{nombreCompleto}} · {{empresa}}">
   <meta property="og:description" content="{{puesto}} · {{sucursal}}">
   <meta property="og:url" content="{{urlTarjeta}}">
   <meta property="og:image" content="{{ogImagen}}">
-  <link rel="icon" type="image/png" href="../logo-elektra.png">
+  <link rel="icon" type="image/png" href="../sol-elektra.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@600;700&display=swap">
   <link rel="stylesheet" href="../estilos.css">
 </head>
 <body>
   <main class="tarjeta">
+    <div class="marcas-agua" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
     <header class="cabecera">
-      <img class="logo" src="../logo-elektra.png" alt="{{empresa}}" width="798" height="448">
+      <img class="logo" src="../logo-elektra.png" alt="{{empresa}}">
     </header>
 
     <section class="perfil">
-      {{fotoHtml}}
+      <div class="marco">{{fotoHtml}}</div>
       <h1>{{nombreCompleto}}</h1>
+      <div class="ornamento" aria-hidden="true"><span></span><img src="../sol-elektra.png" alt=""><span></span></div>
       <p class="puesto">{{puesto}}</p>
       <p class="sucursal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>{{sucursal}}</p>
       {{aviso}}
@@ -56,7 +62,7 @@
       </div>
     </section>
 
-    <footer class="pie">Tarjeta digital · {{sucursal}}</footer>
+    <footer class="pie">{{sucursal}}</footer>
   </main>
 
   <div class="aviso-flotante" id="aviso" role="status" aria-live="polite"></div>

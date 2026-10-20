@@ -10,7 +10,7 @@
       "publicar": true,
       "nombre": "Adrián",
       "apellidos": "Olguín Hilario",
-      "puesto": "Asesor especializado en Ventas a Crédito al Consumo",
+      "puesto": "Asesor de Ventas a Crédito",
       "sucursal": "Elektra Tláhuac del Mar",
       "whatsapp": "5532387771",
       "telefono": "5532387771",
@@ -21,7 +21,7 @@
       "productos": ["movilidad", "hogar", "conectividad"],
       "requisitos": ["INE vigente", "Comprobante de domicilio", "Número de celular"],
       "foto": "recursos/fotos/adrian-olguin-original.jpg",
-      "fotoRecorte": { "izquierda": 0, "arriba": 290, "tamano": 900 }
+      "fotoRecorte": { "izquierda": 60, "arriba": 250, "ancho": 780, "alto": 975 }
     },
     {
       "ruta": "juan-perez",

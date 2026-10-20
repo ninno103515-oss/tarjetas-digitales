@@ -61,7 +61,7 @@ Reglas importantes:
 - **`publicar`**: `true` para que salga en internet; `false` para dejarla solo de prueba.
 - **`productos`**: solo puedes usar `movilidad`, `hogar` y `conectividad`, en el orden que quieras.
 - **Si falta un dato**, ponlo entre corchetes, por ejemplo `"[FALTA LINK DE GOOGLE MAPS]"`. El botón aparecerá desactivado y `npm run generar` te avisará.
-- **`fotoRecorte`** (opcional): si la cara sale cortada, indica el cuadro a recortar en pixeles de la foto original, por ejemplo `"fotoRecorte": { "izquierda": 0, "arriba": 290, "tamano": 900 }`. Sin esto, el recorte se hace automáticamente.
+- **`fotoRecorte`** (opcional): si la cara sale cortada, indica el rectángulo a recortar en pixeles de la foto original (de preferencia en proporción 4 de ancho por 5 de alto), por ejemplo `"fotoRecorte": { "izquierda": 60, "arriba": 250, "ancho": 780, "alto": 975 }`. Sin esto, el recorte se hace automáticamente.
 
 4. Corre `npm run generar` y luego `npm run ver` para ver cómo quedó.
 5. Publica los cambios (ver abajo).
