@@ -43,8 +43,8 @@ async function revisarLink(nombre, url) {
     const tiene = (re, m) => (re.test(vcf) ? ok(m) : mal(m));
     tiene(/^BEGIN:VCARD\r\nVERSION:3\.0/, 'vCard válida (3.0)');
     tiene(new RegExp(`TEL;TYPE=CELL,VOICE:\\+52${a.telefono}`), 'vCard con teléfono');
-    tiene(/^TITLE:.+/m, 'vCard con puesto');
-    tiene(/^ORG:.+/m, 'vCard con sucursal');
+    tiene(/^FN:.+/m, 'vCard con nombre');
+    !/^(ORG|TITLE|URL|NOTE|PHOTO)/m.test(vcf) ? ok('vCard solo con nombre y número') : mal('vCard con datos de más');
 
     // Links de los botones
     const html = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');

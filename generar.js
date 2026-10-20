@@ -71,14 +71,9 @@ function crearVCard(a, urlTarjeta, fotoBase64) {
     'VERSION:3.0',
     `N:${vEscapar(apellidoContacto)};${vEscapar(nombreContacto)};;;`,
     `FN:${vEscapar(comoContacto)}`,
-    `ORG:${vEscapar(a.sucursal)}`,
-    `TITLE:${vEscapar(a.puesto)}`,
     `TEL;TYPE=CELL,VOICE:+${telInternacional(a.telefono)}`
   ];
   if (soloDigitos(a.whatsapp) !== soloDigitos(a.telefono)) lineas.push(`TEL;TYPE=CELL:+${telInternacional(a.whatsapp)}`);
-  lineas.push(`URL:${urlTarjeta}`);
-  lineas.push(`NOTE:${vEscapar(`Horario: ${a.horario}. Tarjeta digital: ${urlTarjeta}`)}`);
-  if (fotoBase64) lineas.push(`PHOTO;ENCODING=b;TYPE=JPEG:${fotoBase64}`);
   lineas.push('END:VCARD');
   return lineas.map(doblar).join('\r\n') + '\r\n';
 }
