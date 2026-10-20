@@ -53,15 +53,15 @@ body {
 .marcas-agua span:nth-child(3) { width: 300px; top: 1150px; left: -130px; transform: rotate(40deg); }
 .marcas-agua span:nth-child(4) { width: 220px; top: 1550px; right: -90px; transform: rotate(-30deg); opacity: .09; }
 
-/* Logo grande en su placa amarilla original */
-.cabecera { padding: calc(20px + env(safe-area-inset-top)) 16px 0; }
-.logo {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 16px;
-  box-shadow: 0 0 0 1px rgba(254, 221, 0, .5), 0 12px 40px rgba(254, 221, 0, .18);
+/* Encabezado amarillo de orilla a orilla: Elektra a todo lo ancho y Banco Azteca abajo a la derecha */
+.cabecera {
+  background: var(--amarillo);
+  padding: env(safe-area-inset-top) 0 12px;
+  border-radius: 0 0 26px 26px;
+  box-shadow: 0 12px 40px rgba(254, 221, 0, .16);
 }
+.logo { display: block; width: 100%; height: auto; }
+.logo-banco { display: block; width: 108px; height: auto; margin: 6px 18px 0 auto; }
 
 /* Perfil */
 .perfil { text-align: center; padding: 26px 20px 0; }

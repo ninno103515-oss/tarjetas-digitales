@@ -195,8 +195,9 @@ async function copiarComunes(destino) {
   fs.mkdirSync(destino, { recursive: true });
   // Logo completo, sin deformar ni cambiar colores; solo se reduce el margen amarillo para que se vea más grande
   await sharp(path.join(RAIZ, config.sitio.logo)).trim({ background: '#FEDD00', threshold: 20 })
-    .extend({ top: 30, bottom: 30, left: 44, right: 44, background: '#FEDD00' }).png().toFile(path.join(destino, 'logo-elektra.png'));
+    .extend({ top: 18, bottom: 6, left: 18, right: 18, background: '#FEDD00' }).png().toFile(path.join(destino, 'logo-elektra.png'));
   fs.copyFileSync(path.join(RAIZ, 'recursos', 'sol-elektra.png'), path.join(destino, 'sol-elektra.png'));
+  fs.copyFileSync(path.join(RAIZ, 'recursos', 'banco-azteca.png'), path.join(destino, 'banco-azteca.png'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos.css'), path.join(destino, 'estilos.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'tarjeta.js'), path.join(destino, 'tarjeta.js'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'inicio.html'), path.join(destino, 'index.html'));
