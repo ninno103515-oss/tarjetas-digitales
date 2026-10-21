@@ -298,3 +298,65 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .boton, .aviso-flotante { transition: none; }
 }
+
+/* Menú propio de "Compartir" */
+.menu-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, .6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.menu-fondo.abierto { opacity: 1; pointer-events: auto; }
+.menu-compartir {
+  width: 100%;
+  max-width: 460px;
+  padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
+  border-radius: 22px 22px 0 0;
+  background: #151517;
+  transform: translateY(30px);
+  transition: transform .2s ease;
+}
+.menu-fondo.abierto .menu-compartir { transform: translateY(0); }
+.menu-titulo { margin: 0 0 14px; text-align: center; font-weight: 700; font-size: 16px; color: var(--texto); }
+.menu-opciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.menu-opcion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 4px;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  color: var(--texto);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu-opcion:active { background: rgba(255, 255, 255, .06); }
+.menu-opcion img, .menu-opcion svg { width: 52px; height: 52px; object-fit: contain; }
+.menu-cerrar {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px;
+  border: 0;
+  border-radius: 14px;
+  background: #222226;
+  color: var(--texto);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-fondo, .menu-compartir { transition: none; }
+}
