@@ -194,7 +194,12 @@ async function generarAsesor(a) {
     estilosExtra: a.compacta ? '<link rel="stylesheet" href="../estilos-compacta.css">' : '',
     aviso: a.publicar ? '' : '<p class="ejemplo">Tarjeta de EJEMPLO · no publicada</p>'
   });
-  fs.writeFileSync(path.join(dir, 'index.html'), html);
+  // Agrega una "versión" a los estilos y al script para que los celulares no muestren una copia vieja guardada
+  const version = require('crypto').createHash('md5')
+    .update(['estilos.css', 'estilos-compacta.css', 'tarjeta.js'].map((f) => fs.readFileSync(path.join(RAIZ, 'plantilla', f))).join(''))
+    .digest('hex').slice(0, 8);
+  const htmlFinal = html.replace(/"(\.\.\/(?:estilos|estilos-compacta)\.css|\.\.\/tarjeta\.js)"/g, (_, archivo) => `"${archivo}?v=${version}"`);
+  fs.writeFileSync(path.join(dir, 'index.html'), htmlFinal);
   fs.writeFileSync(path.join(dir, 'contacto.vcf'), crearVCard(a, urlTarjeta, fotoBase64));
 
   fs.mkdirSync(CARPETA_QR, { recursive: true });

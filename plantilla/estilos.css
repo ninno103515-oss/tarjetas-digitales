@@ -46,11 +46,11 @@ body {
 /* Banco Azteca en placa negra, encimada sobre la orilla inferior del amarillo */
 .placa-banco {
   position: absolute;
-  right: 16px;
+  right: 0;
   bottom: -38px;
   padding: 9px 14px;
-  background: #fff;
-  border-radius: 12px;
+  background: #E4E4E4;
+  border-radius: 12px 0 0 12px;
   box-shadow: 0 8px 22px rgba(0, 0, 0, .6);
 }
 .placa-banco img { display: block; width: 104px; height: auto; }
