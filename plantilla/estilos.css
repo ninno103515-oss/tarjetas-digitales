@@ -49,7 +49,7 @@ body {
   right: 16px;
   bottom: -38px;
   padding: 9px 14px;
-  background: #000;
+  background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 22px rgba(0, 0, 0, .6);
 }
@@ -360,3 +360,18 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .menu-fondo, .menu-compartir { transition: none; }
 }
+
+/* Botón "Guardar contacto": óvalo dorado Elektra, discreto */
+.botones .boton {
+  min-height: 0;
+  gap: 7px;
+  border-radius: 999px;
+  padding: 3px 13px 3px 3px;
+  background: rgba(254, 221, 0, .14);
+  border: 1px solid rgba(254, 221, 0, .4);
+  color: #FEDD00;
+  box-shadow: none;
+}
+.botones .boton .icono { flex-basis: 24px; height: 24px; background: rgba(254, 221, 0, .18); color: #FEDD00; }
+.botones .boton .icono svg { width: 14px; height: 14px; }
+.botones .texto strong { color: #FEDD00; font-size: 12px; font-weight: 800; }

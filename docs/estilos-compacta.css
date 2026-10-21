@@ -22,9 +22,6 @@
 
 .botones { padding: 5px 10px 0; }
 .boton { min-height: 42px; padding: 4px 10px; border-radius: 12px; }
-.botones .icono { flex-basis: 30px; height: 30px; }
-.botones .icono svg { width: 17px; height: 17px; }
-.botones .texto strong { font-size: 14px; }
 
 /* Bloques: títulos y contenido centrados */
 .bloque { margin: 6px 10px 0; padding: 7px 10px; text-align: center; }

@@ -1,4 +1,5 @@
-// Botón "Compartir": abre un menú propio de la tarjeta con WhatsApp, Facebook y Copiar link.
+// Botón "Compartir": usa el menú de compartir del celular mostrando solo el nombre;
+// si el navegador no lo tiene (por ejemplo en computadora), abre un menú propio con WhatsApp, Facebook y Copiar link.
 (function () {
   var boton = document.getElementById('compartir');
   var aviso = document.getElementById('aviso');
@@ -6,6 +7,7 @@
 
   var url = boton.getAttribute('data-url') || location.href.split('#')[0];
   var texto = boton.getAttribute('data-texto') || document.title;
+  var nombre = boton.getAttribute('data-nombre') || document.title;
 
   function mostrarAviso(mensaje) {
     aviso.textContent = mensaje;
@@ -59,7 +61,15 @@
   function abrir() { fondo.classList.add('abierto'); }
   function cerrar() { fondo.classList.remove('abierto'); }
 
-  boton.addEventListener('click', abrir);
+  boton.addEventListener('click', function () {
+    if (navigator.share) {
+      navigator.share({ title: nombre, text: texto, url: url }).catch(function (error) {
+        if (error && error.name !== 'AbortError') abrir();
+      });
+    } else {
+      abrir();
+    }
+  });
   fondo.addEventListener('click', function (e) {
     if (e.target === fondo || e.target.closest('.menu-cerrar')) return cerrar();
     var opcion = e.target.closest('[data-opcion]');

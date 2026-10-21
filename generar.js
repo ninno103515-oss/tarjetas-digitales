@@ -164,7 +164,7 @@ async function generarAsesor(a) {
     cuadro({ clase: 'cuadro-whatsapp', href: wa, icono: 'whatsapp.png', titulo: 'WhatsApp' }, 'whatsapp', a),
     cuadro({ clase: 'cuadro-credito', href: a.linkCredito, icono: 'credito.png', titulo: 'Crédito' }, 'linkCredito', a),
     cuadro({ href: a.mapa, icono: 'ubicacion.png', titulo: 'Ubicación' }, 'mapa', a),
-    `<button class="cuadro" type="button" id="compartir" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`Te comparto la tarjeta digital de ${nombreCompleto}, ${a.puesto} en ${a.sucursal}:`)}"><img src="../iconos/compartir.png" alt=""><span>Compartir</span></button>`
+    `<button class="cuadro" type="button" id="compartir" data-nombre="${escapar(nombreCompleto)}" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`Te comparto la tarjeta digital de ${nombreCompleto}, ${a.puesto} en ${a.sucursal}:`)}"><img src="../iconos/compartir.png" alt=""><span>Compartir</span></button>`
   ].join('\n      ');
   const botones = [
     boton({ href: 'contacto.vcf', icono: ICONOS.contacto, titulo: 'Guardar contacto', externo: false, extra: ` download="${nombreArchivoVcf}"` }, 'contacto', a)
