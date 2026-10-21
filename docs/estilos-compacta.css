@@ -1,5 +1,7 @@
 /* Versión 2: toda la tarjeta en una sola pantalla de celular (se carga encima de estilos.css) */
-.tarjeta { padding-bottom: 10px; }
+/* La tarjeta ocupa toda la pantalla y el espacio sobrante se reparte parejo entre las secciones */
+.tarjeta { display: flex; flex-direction: column; min-height: 100vh; min-height: 100svh; padding-bottom: 14px; }
+.tarjeta > *:not(.cabecera):not(.aviso-flotante) { margin-top: auto; }
 .cabecera { padding: calc(9px + env(safe-area-inset-top)) 66px 26px; }
 .placa-banco { right: 0; bottom: -24px; padding: 6px 11px; border-radius: 12px 0 0 12px; }
 .placa-banco img { width: 84px; }
