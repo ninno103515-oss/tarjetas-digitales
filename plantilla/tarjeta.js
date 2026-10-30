@@ -45,8 +45,16 @@
   if (app && app.getAttribute('data-empleado')) {
     app.addEventListener('click', function (e) {
       e.preventDefault();
-      copiar(app.getAttribute('data-empleado'), 'Número de asesor copiado. Pégalo en «Te ayudó un asesor».');
+      copiar(app.getAttribute('data-empleado'), 'Número de asesor copiado. Pégalo en “Te ayudó un asesor”.');
       setTimeout(function () { location.href = app.href; }, 1800);
+    });
+  }
+
+  // Tocar el número de asesor lo copia
+  var numero = document.querySelector('.copiar-numero');
+  if (numero) {
+    numero.addEventListener('click', function () {
+      copiar(numero.getAttribute('data-copiar'), 'Número copiado. Pégalo en “Te ayudó un asesor”.');
     });
   }
 

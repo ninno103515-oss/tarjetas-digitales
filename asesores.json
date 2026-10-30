@@ -21,10 +21,10 @@
       "mapa": "https://maps.app.goo.gl/Xfsjb3hLAeVoWQBUA",
       "linkCredito": "https://bazsolicitudunica.com.mx/pages/intro?iP=39&sub=1&met=7&epm=166013&spm=5784&cpm=1&ppm=1",
       "horario": "Martes a domingo, 9:00 a 21:00",
-      "productos": ["conectividad", "hogar", "movilidad"],
+      "productos": ["conectividad", "hogar", "movilidad", "efectivo"],
       "requisitos": ["INE vigente", "Comprobante de domicilio", "Número de celular"],
-      "foto": "recursos/fotos/adrian-olguin-original.jpg",
-      "fotoRecorte": { "izquierda": 0, "arriba": 215, "ancho": 900, "alto": 1125 }
+      "foto": "recursos/fotos/adrian-olguin-2-original.jpg",
+      "fotoRecorte": { "izquierda": 0, "arriba": 125, "ancho": 461, "alto": 576 }
     },
     {
       "ruta": "juan-perez",

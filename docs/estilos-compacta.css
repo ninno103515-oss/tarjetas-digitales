@@ -26,10 +26,11 @@
 /* Bloques: títulos y contenido centrados */
 .bloque { margin: 6px 10px 0; padding: 7px 10px; text-align: center; }
 .bloque h2 { font-size: 11.5px; margin-bottom: 6px; text-align: center; }
-.productos { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.productos { display: flex; gap: 2px; }
+.productos li { flex: 1 1 0; min-width: 0; }
 .productos li { flex-direction: column; align-items: center; gap: 2px; text-align: center; }
-.foto-producto { flex: none; width: 100%; height: 66px; object-fit: contain; object-position: center; }
-.productos strong { font-size: 13px; }
+.foto-producto { flex: none; width: 100%; height: 58px; object-fit: contain; object-position: center; }
+.productos strong { font-size: 11.5px; }
 .productos small { display: none; }
 .requisitos { display: grid; justify-content: center; gap: 4px; text-align: left; }
 .requisitos li { font-size: 12.5px; padding-left: 20px; }
@@ -52,8 +53,90 @@
 .tramite-mano { font-size: 20px; margin-top: -10px; }
 
 .ayuda-app { margin: 4px 10px 0; font-size: 11.5px; }
-.ayuda-app strong { font-size: 13px; }
+.copiar-numero { padding: 1px 5px; font-size: 13px; }
+.copiar-numero svg { width: 12px; height: 12px; }
 .fila-credito { align-items: stretch; }
 .fila-credito .bloque h2, .tramite-letrero { margin: 0 0 6px; font-size: 12.5px; line-height: 1.2; }
 .tramite-tarjeta { width: 122px; margin: auto 0; }
 .tramite { justify-self: end; width: 122px; }
+
+/* Celulares muy angostos: los cuatro recuadros siempre caben */
+.cuadro { min-width: 0; }
+@media (max-width: 350px) {
+  .cuadros { gap: 3px; padding-left: 6px; padding-right: 6px; }
+  .cuadro { padding-left: 1px; padding-right: 1px; font-size: 10.5px; }
+  .cuadro img, .cuadro-credito img { width: 42px; height: 34px; }
+}
+.tramite-letrero { letter-spacing: .06em; }
+
+/* Letras un poco más grandes para que se lean mejor */
+.productos strong { font-size: 12.5px; }
+.ayuda-app { font-size: 12.5px; }
+.copiar-numero { font-size: 14px; }
+.nota { font-size: 11.5px; }
+.fila-credito .requisitos li { font-size: 12.5px; }
+@media (max-width: 350px) {
+  .productos strong { font-size: 11px; }
+  .ayuda-app { font-size: 11px; }
+}
+
+/* Nombre, puesto y sucursal centrados; sucursal más marcada */
+.perfil h1, .puesto { text-align: center; justify-self: center; }
+.sucursal { justify-self: center; align-self: start; padding: 2px 0; border: 0; color: var(--texto); font-size: 13.5px; font-weight: 700; }
+
+/* Línea de la app y nota de crédito con el mismo formato */
+.ayuda-app, .nota { font-size: 12px; font-weight: 400; color: var(--gris); }
+.copiar-numero { padding: 0 4px; font-size: 12px; font-weight: 700; border-color: rgba(244, 241, 232, .25); }
+.copiar-numero svg { width: 11px; height: 11px; }
+@media (max-width: 350px) {
+  .ayuda-app, .nota { font-size: 11px; }
+  .copiar-numero { font-size: 11px; }
+}
+
+/* Nombre, puesto y sucursal con el mismo espacio entre renglones */
+.perfil { grid-template-rows: 1fr auto auto auto 1fr; row-gap: 7px; }
+.marco { grid-column: 1; grid-row: 1 / -1; }
+.perfil h1, .puesto, .sucursal { grid-column: 2; margin: 0; padding: 0; line-height: 1.2; align-self: center; }
+.perfil h1 { grid-row: 2; }
+.puesto { grid-row: 3; }
+.sucursal { grid-row: 4; }
+
+/* Mismo espacio: orilla-foto, foto-texto y texto-orilla */
+.perfil { justify-content: space-evenly; column-gap: 0; padding-left: 0; padding-right: 0; }
+
+/* Mismos márgenes que la foto; nota en un solo renglón */
+.fila-credito { margin-left: 18px; margin-right: 18px; }
+.nota { white-space: nowrap; }
+
+/* Requisitos y tarjeta: mismas distancias que foto y texto (orilla, entre ellos y orilla) */
+.fila-credito { grid-template-columns: auto auto; justify-content: space-evenly; column-gap: 0; margin-left: 0; margin-right: 0; }
+.tramite { justify-self: auto; }
+/* La manita se encima un poco en la orilla de la tarjeta para no tocar los requisitos */
+.tramite-mano { margin-right: -13px; }
+/* Tarjeta un poco más chica: más aire y manita fuera de la tarjeta */
+.tramite, .tramite-tarjeta { width: 104px; }
+.tramite-mano { margin-right: 2px; font-size: 19px; }
+.tramite { align-items: center; }
+.tramite-letrero { align-self: center; }
+/* "Comprobante de domicilio" en dos renglones para dejar aire junto a la manita */
+.fila-credito .requisitos li { max-width: 134px; }
+
+/* Requisitos en un renglón cada uno, a la orilla; tarjeta a la otra orilla y manita entre ambos */
+.fila-credito { justify-content: space-between; margin-left: 14px; margin-right: 14px; }
+.fila-credito .requisitos li { max-width: none; white-space: nowrap; }
+.tramite, .tramite-tarjeta { width: 108px; }
+@media (max-width: 350px) {
+  .fila-credito .requisitos li { white-space: normal; max-width: 125px; }
+  .tramite, .tramite-tarjeta { width: 92px; }
+}
+/* "Trámitalo aquí" alineado a la orilla derecha de la tarjeta */
+.tramite { align-items: flex-end; }
+.tramite-letrero { align-self: flex-end; }
+.fila-credito { margin-left: 20px; margin-right: 20px; }
+
+/* Separación vertical pareja entre secciones, también en celulares altos */
+.tarjeta { padding-bottom: 0; }
+.perfil { padding-top: 14px; }
+.cuadros { padding-top: 0; }
+.bloque { padding-top: 0; padding-bottom: 0; }
+.horario { margin-bottom: auto; }

@@ -31,6 +31,12 @@ const PRODUCTOS = {
     detalle: 'Muebles, línea blanca y electrodomésticos',
     icono: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>'
   },
+  efectivo: {
+    titulo: 'Efectivo',
+    imagen: 'efectivo.png',
+    detalle: 'Préstamo en efectivo',
+    icono: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>'
+  },
   conectividad: {
     titulo: 'Conectividad',
     imagen: 'conectividad.png',
@@ -161,7 +167,7 @@ async function generarAsesor(a) {
   const nombreArchivoVcf = (a.nombreContacto || `${a.nombre} ${config.sitio.empresa}`).replace(/\s+/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9-]/g, '') + '.vcf';
 
   const cuadros = [
-    cuadro({ clase: 'cuadro-whatsapp', href: wa, icono: 'whatsapp.png', titulo: 'WhatsApp' }, 'whatsapp', a),
+    cuadro({ clase: 'cuadro-whatsapp', href: wa, icono: 'whatsapp.png', titulo: 'Información' }, 'whatsapp', a),
     cuadro({ clase: 'cuadro-app', href: config.sitio.appAndroid, icono: 'app-elektra.png', titulo: 'App Elektra', extra: ` data-iphone="${escapar(config.sitio.appIphone)}"${a.numeroEmpleado ? ` data-empleado="${escapar(a.numeroEmpleado)}"` : ''}` }, 'appAndroid', a),
     cuadro({ href: a.mapa, icono: 'ubicacion.png', titulo: 'Ubicación' }, 'mapa', a),
     `<button class="cuadro" type="button" id="compartir" data-nombre="${escapar(nombreCompleto)}" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`Te comparto la tarjeta digital de ${nombreCompleto}, ${a.puesto} en ${a.sucursal}:`)}"><img src="../iconos/compartir.png" alt=""><span>Compartir</span></button>`
@@ -192,9 +198,8 @@ async function generarAsesor(a) {
     ogImagen: escapar(ogImagen),
     fotoHtml,
     cuadros,
-    ayudaApp: a.numeroEmpleado ? `<p class="ayuda-app">En la app, en «Te ayudó un asesor», escribe: <strong>${escapar(a.numeroEmpleado)}</strong></p>` : '',
+    ayudaApp: a.numeroEmpleado ? `<p class="ayuda-app">Código de asesor para tu registro en la app: <button class="copiar-numero" type="button" data-copiar="${escapar(a.numeroEmpleado)}" aria-label="Copiar número ${escapar(a.numeroEmpleado)}">${escapar(a.numeroEmpleado)}<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg></button></p>` : '',
     tramite,
-    botones,
     productosHtml,
     requisitosHtml,
     estilosExtra: a.compacta ? '<link rel="stylesheet" href="../estilos-compacta.css">' : '',
