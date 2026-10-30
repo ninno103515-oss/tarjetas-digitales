@@ -48,7 +48,7 @@ async function revisarLink(nombre, url) {
 
     // Links de los botones
     const html = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
-    const links = [...html.matchAll(/<a class="(?:boton|cuadro)[^"]*" href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
+    const links = [...html.matchAll(/<a class="(?:boton|cuadro|tramite)[^"]*" href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
     for (const l of links) {
       if (l.startsWith('tel:')) l === `tel:+52${a.telefono}` ? ok(`Llamar: ${l}`) : mal(`Teléfono raro: ${l}`);
       else if (l.startsWith('http')) await revisarLink(l.split('/')[2], l);

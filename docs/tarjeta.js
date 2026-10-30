@@ -31,11 +31,23 @@
     return ok;
   }
 
-  function copiar(valor) {
-    var listo = function () { mostrarAviso('Link copiado. Pégalo donde quieras.'); };
+  function copiar(valor, mensaje) {
+    var listo = function () { mostrarAviso(mensaje || 'Link copiado. Pégalo donde quieras.'); };
     var respaldo = function () { if (copiarViejo(valor)) listo(); else window.prompt('Copia este link:', valor); };
     if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(valor).then(listo, respaldo);
     else respaldo();
+  }
+
+  // Recuadro de la app: en iPhone abre App Store; en los demás, Google Play
+  var app = document.querySelector('.cuadro-app');
+  if (app && /iPhone|iPad|iPod/.test(navigator.userAgent)) app.href = app.getAttribute('data-iphone');
+  // Copia el número de asesor y, tras mostrar el aviso, abre la tienda
+  if (app && app.getAttribute('data-empleado')) {
+    app.addEventListener('click', function (e) {
+      e.preventDefault();
+      copiar(app.getAttribute('data-empleado'), 'Número de asesor copiado. Pégalo en «Te ayudó un asesor».');
+      setTimeout(function () { location.href = app.href; }, 1800);
+    });
   }
 
   // Menú propio (se arma una sola vez)

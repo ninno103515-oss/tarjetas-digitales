@@ -40,6 +40,8 @@
       {{cuadros}}
     </nav>
 
+    {{ayudaApp}}
+
     <nav class="botones" aria-label="Más opciones">
       {{botones}}
     </nav>
@@ -51,13 +53,16 @@
       </ul>
     </section>
 
-    <section class="bloque">
-      <h2>Requisitos</h2>
-      <ul class="requisitos">
-        {{requisitosHtml}}
-      </ul>
-      <p class="nota">Sujeto a aprobación de crédito.</p>
-    </section>
+    <div class="fila-credito">
+      <section class="bloque">
+        <h2>Requisitos</h2>
+        <ul class="requisitos">
+          {{requisitosHtml}}
+        </ul>
+        <p class="nota">Sujeto a aprobación de crédito.</p>
+      </section>
+      {{tramite}}
+    </div>
 
     <section class="bloque horario">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>

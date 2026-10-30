@@ -375,3 +375,28 @@ body {
 .botones .boton .icono { flex-basis: 24px; height: 24px; background: rgba(254, 221, 0, .18); color: #FEDD00; }
 .botones .boton .icono svg { width: 14px; height: 14px; }
 .botones .texto strong { color: #FEDD00; font-size: 12px; font-weight: 800; }
+
+/* Requisitos a la izquierda; tarjeta de crédito con letrero y manita a la derecha */
+.fila-credito { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; margin: 16px 16px 0; }
+.fila-credito .bloque { margin: 0; padding: 0; text-align: left; }
+.fila-credito .bloque h2 { text-align: left; }
+.fila-credito .requisitos { justify-content: start; text-align: left; }
+.tramite { display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center; text-decoration: none; color: var(--texto); }
+.tramite-letrero { color: var(--amarillo); font-size: 15px; font-weight: 800; }
+.tramite-tarjeta { position: relative; display: block; width: 125px; }
+.tramite-mano { position: absolute; right: 100%; top: 50%; margin: -12px 3px 0 0; font-size: 22px; line-height: 1; animation: senalar 1.1s ease-in-out infinite; }
+.tramite img { display: block; width: 100%; height: auto; }
+.tramite.falta small { color: var(--rojo); font-size: 12px; }
+@keyframes senalar { 50% { transform: translateX(3px); } }
+@media (prefers-reduced-motion: reduce) { .tramite-mano { animation: none; } }
+
+/* Número de asesor para el registro en la app */
+.ayuda-app { margin: 10px 16px 0; text-align: center; font-size: 13px; color: var(--gris); }
+.ayuda-app strong { color: var(--amarillo); font-size: 15px; }
+
+/* Requisitos y tarjeta alineados: títulos a la misma altura y tarjeta centrada frente a la lista */
+.fila-credito { align-items: stretch; }
+.fila-credito .bloque h2, .tramite-letrero { margin: 0 0 8px; line-height: 1.2; font-size: 14px; }
+.tramite { justify-content: flex-start; gap: 0; }
+.tramite-tarjeta { margin: auto 0; }
+.tramite { justify-self: end; width: 125px; }

@@ -2,7 +2,9 @@
   "sitio": {
     "urlBase": "https://ninno103515-oss.github.io/tarjetas-digitales",
     "empresa": "Elektra",
-    "logo": "recursos/logo-elektra.png"
+    "logo": "recursos/logo-elektra.png",
+    "appAndroid": "https://play.google.com/store/apps/details?id=mx.elektra.appelektra",
+    "appIphone": "https://apps.apple.com/mx/app/id1610220567"
   },
   "asesores": [
     {
@@ -14,6 +16,7 @@
       "sucursal": "Elektra Tláhuac del Mar",
       "whatsapp": "5532387771",
       "telefono": "5532387771",
+      "numeroEmpleado": "166013",
       "mensajeWhatsApp": "Hola Adrián Olguín, vi tu tarjeta digital y quiero información sobre un crédito",
       "mapa": "https://maps.app.goo.gl/Xfsjb3hLAeVoWQBUA",
       "linkCredito": "https://bazsolicitudunica.com.mx/pages/intro?iP=39&sub=1&met=7&epm=166013&spm=5784&cpm=1&ppm=1",

@@ -111,12 +111,12 @@ function boton({ clase = '', href, icono, titulo, detalle, externo = true, extra
 }
 
 // Recuadro grande con logo (WhatsApp, crédito, ubicación)
-function cuadro({ clase = '', href, icono, titulo }, nombreDato, a) {
+function cuadro({ clase = '', href, icono, titulo, extra = '' }, nombreDato, a) {
   if (esMarcador(href)) {
     avisos.push(`  - ${a.ruta}: falta "${nombreDato}" (recuadro "${titulo}" desactivado)`);
     return `<span class="cuadro falta" aria-disabled="true"><img src="../iconos/${icono}" alt=""><span>${escapar(titulo)}</span><small>${escapar(href || '[FALTA ' + nombreDato.toUpperCase() + ']')}</small></span>`;
   }
-  return `<a class="cuadro ${clase}" href="${escapar(href)}" target="_blank" rel="noopener"><img src="../iconos/${icono}" alt=""><span>${escapar(titulo)}</span></a>`;
+  return `<a class="cuadro ${clase}" href="${escapar(href)}" target="_blank" rel="noopener"${extra}><img src="../iconos/${icono}" alt=""><span>${escapar(titulo)}</span></a>`;
 }
 
 const svg = (interior, relleno = false) => `<svg viewBox="0 0 24 24" class="${relleno ? 'relleno' : ''}">${interior}</svg>`;
@@ -162,10 +162,14 @@ async function generarAsesor(a) {
 
   const cuadros = [
     cuadro({ clase: 'cuadro-whatsapp', href: wa, icono: 'whatsapp.png', titulo: 'WhatsApp' }, 'whatsapp', a),
-    cuadro({ clase: 'cuadro-credito', href: a.linkCredito, icono: 'credito.png', titulo: 'Crédito' }, 'linkCredito', a),
+    cuadro({ clase: 'cuadro-app', href: config.sitio.appAndroid, icono: 'app-elektra.png', titulo: 'App Elektra', extra: ` data-iphone="${escapar(config.sitio.appIphone)}"${a.numeroEmpleado ? ` data-empleado="${escapar(a.numeroEmpleado)}"` : ''}` }, 'appAndroid', a),
     cuadro({ href: a.mapa, icono: 'ubicacion.png', titulo: 'Ubicación' }, 'mapa', a),
     `<button class="cuadro" type="button" id="compartir" data-nombre="${escapar(nombreCompleto)}" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`Te comparto la tarjeta digital de ${nombreCompleto}, ${a.puesto} en ${a.sucursal}:`)}"><img src="../iconos/compartir.png" alt=""><span>Compartir</span></button>`
   ].join('\n      ');
+  // Tarjeta de crédito con letrero y manita, junto a los requisitos
+  const tramite = esMarcador(a.linkCredito)
+    ? `<span class="tramite falta"><span class="tramite-letrero">Trámitalo aquí</span><small>${escapar(a.linkCredito || '[FALTA LINK DE CRÉDITO]')}</small></span>`
+    : `<a class="tramite" href="${escapar(a.linkCredito)}" target="_blank" rel="noopener"><span class="tramite-letrero">Trámitalo aquí</span><span class="tramite-tarjeta"><span class="tramite-mano" aria-hidden="true">👉</span><img src="../iconos/credito.png" alt="Tarjeta de crédito"></span></a>`;
   const botones = [
     boton({ href: 'contacto.vcf', icono: ICONOS.contacto, titulo: 'Guardar contacto', externo: false, extra: ` download="${nombreArchivoVcf}"` }, 'contacto', a)
   ].join('\n      ');
@@ -188,6 +192,8 @@ async function generarAsesor(a) {
     ogImagen: escapar(ogImagen),
     fotoHtml,
     cuadros,
+    ayudaApp: a.numeroEmpleado ? `<p class="ayuda-app">En la app, en «Te ayudó un asesor», escribe: <strong>${escapar(a.numeroEmpleado)}</strong></p>` : '',
+    tramite,
     botones,
     productosHtml,
     requisitosHtml,
@@ -218,7 +224,7 @@ async function copiarComunes(destino) {
   fs.mkdirSync(path.join(destino, 'productos'), { recursive: true });
   for (const p of Object.values(PRODUCTOS)) if (p.imagen && fs.existsSync(path.join(RAIZ, 'recursos', 'productos', p.imagen))) fs.copyFileSync(path.join(RAIZ, 'recursos', 'productos', p.imagen), path.join(destino, 'productos', p.imagen));
   fs.mkdirSync(path.join(destino, 'iconos'), { recursive: true });
-  for (const f of ['whatsapp.png', 'credito.png', 'ubicacion.png', 'compartir.png']) fs.copyFileSync(path.join(RAIZ, 'recursos', 'iconos', f), path.join(destino, 'iconos', f));
+  for (const f of ['whatsapp.png', 'app-elektra.png', 'credito.png', 'ubicacion.png', 'compartir.png']) fs.copyFileSync(path.join(RAIZ, 'recursos', 'iconos', f), path.join(destino, 'iconos', f));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos.css'), path.join(destino, 'estilos.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos-compacta.css'), path.join(destino, 'estilos-compacta.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'tarjeta.js'), path.join(destino, 'tarjeta.js'));
