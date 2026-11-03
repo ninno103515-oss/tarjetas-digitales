@@ -167,15 +167,15 @@ async function generarAsesor(a) {
   const nombreArchivoVcf = (a.nombreContacto || `${a.nombre} ${config.sitio.empresa}`).replace(/\s+/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9-]/g, '') + '.vcf';
 
   const cuadros = [
-    cuadro({ clase: 'cuadro-whatsapp', href: wa, icono: 'whatsapp.png', titulo: 'Información' }, 'whatsapp', a),
+    cuadro({ clase: 'cuadro-whatsapp', href: wa, icono: 'whatsapp.png', titulo: 'WhatsApp' }, 'whatsapp', a),
     cuadro({ clase: 'cuadro-app', href: config.sitio.appAndroid, icono: 'app-elektra.png', titulo: 'App Elektra', extra: ` data-iphone="${escapar(config.sitio.appIphone)}"${a.numeroEmpleado ? ` data-empleado="${escapar(a.numeroEmpleado)}"` : ''}` }, 'appAndroid', a),
     cuadro({ href: a.mapa, icono: 'ubicacion.png', titulo: 'Ubicación' }, 'mapa', a),
     `<button class="cuadro" type="button" id="compartir" data-nombre="${escapar(nombreCompleto)}" data-url="${escapar(urlTarjeta)}" data-texto="${escapar(`Te comparto la tarjeta digital de ${nombreCompleto}, ${a.puesto} en ${a.sucursal}:`)}"><img src="../iconos/compartir.png" alt=""><span>Compartir</span></button>`
   ].join('\n      ');
   // Tarjeta de crédito con letrero y manita, junto a los requisitos
   const tramite = esMarcador(a.linkCredito)
-    ? `<span class="tramite falta"><span class="tramite-letrero">Trámitalo aquí</span><small>${escapar(a.linkCredito || '[FALTA LINK DE CRÉDITO]')}</small></span>`
-    : `<a class="tramite" href="${escapar(a.linkCredito)}" target="_blank" rel="noopener"><span class="tramite-letrero">Trámitalo aquí</span><span class="tramite-tarjeta"><span class="tramite-mano" aria-hidden="true">👉</span><img src="../iconos/credito.png" alt="Tarjeta de crédito"></span></a>`;
+    ? `<span class="tramite falta"><span class="tramite-letrero">Tramítalo aquí</span><small>${escapar(a.linkCredito || '[FALTA LINK DE CRÉDITO]')}</small></span>`
+    : `<a class="tramite" href="${escapar(a.linkCredito)}" target="_blank" rel="noopener"><span class="tramite-letrero">Tramítalo aquí</span><span class="tramite-tarjeta"><span class="tramite-mano" aria-hidden="true">👉</span><img src="../iconos/credito.png" alt="Tarjeta de crédito"></span></a>`;
   const botones = [
     boton({ href: 'contacto.vcf', icono: ICONOS.contacto, titulo: 'Guardar contacto', externo: false, extra: ` download="${nombreArchivoVcf}"` }, 'contacto', a)
   ].join('\n      ');
@@ -219,6 +219,15 @@ async function generarAsesor(a) {
   console.log(`✔ ${a.publicar ? 'PUBLICAR ' : 'PRUEBA   '} ${a.ruta.padEnd(20)} ${a.publicar ? urlTarjeta : path.relative(RAIZ, path.join(dir, 'index.html'))}`);
 }
 
+function crearRedireccion(a, vieja) {
+  if (!/^[a-z0-9-]+$/.test(vieja)) throw new Error(`Ruta anterior inválida "${vieja}"`);
+  const destino = `${urlBase}/${a.ruta}/`;
+  const dir = path.join(a.publicar ? SALIDA_PUBLICA : SALIDA_PRUEBA, vieja);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=${destino}"><link rel="canonical" href="${destino}"><title>Redirigiendo…</title><script>location.replace(${JSON.stringify(destino)} + location.hash)</script></head><body><a href="${destino}">Abrir tarjeta</a></body></html>`);
+  console.log(`↪ ${vieja} lleva a ${a.ruta}`);
+}
+
 async function copiarComunes(destino) {
   fs.mkdirSync(destino, { recursive: true });
   // Logo completo, sin deformar ni cambiar colores; solo se reduce el margen amarillo para que se vea más grande
@@ -248,10 +257,10 @@ async function copiarComunes(destino) {
   await copiarComunes(SALIDA_PUBLICA);
   await copiarComunes(SALIDA_PRUEBA);
 
-  // Cada asesor tiene 2 versiones: la normal (ruta) y la de una sola pantalla (ruta-2)
   for (const a of config.asesores) {
-    await generarAsesor(a);
-    await generarAsesor({ ...a, ruta: `${a.ruta}-2`, compacta: true });
+    await generarAsesor({ ...a, compacta: true });
+    // Direcciones viejas (por ejemplo QR o NFC antiguos) que llevan automáticamente a la nueva
+    for (const vieja of a.rutasAnteriores || []) crearRedireccion(a, vieja);
   }
 
   if (avisos.length) console.log('\n⚠ Revisa estos datos pendientes:\n' + avisos.join('\n'));

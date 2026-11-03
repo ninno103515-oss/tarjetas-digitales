@@ -9,6 +9,7 @@
   "asesores": [
     {
       "ruta": "adrian-olguin",
+      "rutasAnteriores": ["adrian-olguin-2"],
       "publicar": true,
       "nombre": "Adrián",
       "apellidos": "Olguín Hilario",

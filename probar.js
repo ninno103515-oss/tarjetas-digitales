@@ -22,8 +22,11 @@ async function revisarLink(nombre, url) {
 
 (async () => {
   const enLinea = process.argv.includes('--en-linea');
-  const lista = config.asesores.flatMap((a) => [a, { ...a, ruta: `${a.ruta}-2` }]);
-  for (const a of lista) {
+  for (const a of config.asesores) {
+    for (const vieja of a.rutasAnteriores || []) {
+      const red = path.join(RAIZ, a.publicar ? 'docs' : 'vista-previa', vieja, 'index.html');
+      fs.existsSync(red) && fs.readFileSync(red, 'utf8').includes(`${urlBase}/${a.ruta}/`) ? ok(`${vieja} redirige a ${a.ruta}`) : mal(`falta redirección de ${vieja}`);
+    }
     const dir = path.join(RAIZ, a.publicar ? 'docs' : 'vista-previa', a.ruta);
     const urlTarjeta = `${urlBase}/${a.ruta}/`;
     console.log(`\n${a.ruta} ${a.publicar ? '' : '(prueba, no se publica)'}`);

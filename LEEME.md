@@ -4,7 +4,7 @@ Cada asesor tiene su propia tarjeta en internet, su código QR para imprimir y s
 
 - Tarjeta de Adrián: https://ninno103515-oss.github.io/tarjetas-digitales/adrian-olguin/
 - Cada tarjeta nueva queda en: `https://ninno103515-oss.github.io/tarjetas-digitales/RUTA-DEL-ASESOR/`
-- Cada asesor tiene **2 versiones**: la normal (`/RUTA/`, con scroll) y la de una sola pantalla (`/RUTA-2/`, estilos en `plantilla/estilos-compacta.css`). Cada una tiene su QR en `codigos-qr/`.
+- Cada asesor tiene una tarjeta de una sola pantalla en `/RUTA/`. Si alguna vez cambia su ruta, pon la vieja en `"rutasAnteriores"` para que los QR y NFC antiguos sigan llevando a la nueva.
 
 ## Qué hay en esta carpeta
 
