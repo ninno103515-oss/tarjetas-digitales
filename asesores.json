@@ -24,7 +24,7 @@
       "horario": "Martes a domingo, 9:00 a 21:00",
       "productos": ["conectividad", "hogar", "movilidad", "efectivo"],
       "requisitos": ["INE vigente", "Comprobante de domicilio", "Número de celular"],
-      "foto": "recursos/fotos/adrian-olguin-2-original.jpg",
+      "foto": "recursos/fotos/adrian-olguin-3-original.jpg",
       "fotoRecorte": { "izquierda": 0, "arriba": 125, "ancho": 461, "alto": 576 }
     },
     {
