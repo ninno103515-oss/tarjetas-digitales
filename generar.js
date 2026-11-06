@@ -271,12 +271,12 @@ async function copiarComunes(destino) {
   for (const p of Object.values(PRODUCTOS)) if (p.imagen && fs.existsSync(path.join(RAIZ, 'recursos', 'productos', p.imagen))) fs.copyFileSync(path.join(RAIZ, 'recursos', 'productos', p.imagen), path.join(destino, 'productos', p.imagen));
   fs.mkdirSync(path.join(destino, 'iconos'), { recursive: true });
   for (const f of ['whatsapp.png', 'app-elektra.png', 'credito.png', 'ubicacion.png', 'compartir.png']) fs.copyFileSync(path.join(RAIZ, 'recursos', 'iconos', f), path.join(destino, 'iconos', f));
-  // Íconos de la tarjeta instalada en el celular: sol de Elektra sobre fondo negro
-  for (const [nombre, lado, sol] of [['icono-180.png', 180, 0.66], ['icono-192.png', 192, 0.66], ['icono-512.png', 512, 0.66], ['icono-512-maskable.png', 512, 0.5]]) {
-    const s = await sharp(path.join(RAIZ, 'recursos', 'sol-elektra.png')).resize({ width: Math.round(lado * sol) }).toBuffer();
-    const m = await sharp(s).metadata();
-    await sharp({ create: { width: lado, height: lado, channels: 4, background: '#0A0A0B' } }).composite([{ input: s, left: Math.round((lado - m.width) / 2), top: Math.round((lado - m.height) / 2) }]).png().toFile(path.join(destino, nombre));
-  }
+  // Íconos de la tarjeta instalada en el celular: la tarjeta en miniatura (recursos/icono-app-sin-fondo.png, se crea con crear-icono-sin-fondo.js)
+  const icono = path.join(RAIZ, 'recursos', 'icono-app-sin-fondo.png');
+  for (const [nombre, lado] of [['icono-180.png', 180], ['icono-192.png', 192], ['icono-512.png', 512]]) await sharp(icono).resize(lado, lado).png().toFile(path.join(destino, nombre));
+  // Versión 'maskable' (Android la recorta en círculo o cuadro): tarjeta más chica sobre fondo negro
+  const chica = await sharp(icono).resize(330, 330).png().toBuffer();
+  await sharp({ create: { width: 512, height: 512, channels: 4, background: '#0A0A0B' } }).composite([{ input: chica, left: 91, top: 91 }]).png().toFile(path.join(destino, 'icono-512-maskable.png'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos.css'), path.join(destino, 'estilos.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos-compacta.css'), path.join(destino, 'estilos-compacta.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'tarjeta.js'), path.join(destino, 'tarjeta.js'));
