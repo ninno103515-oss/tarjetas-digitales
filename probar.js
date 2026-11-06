@@ -47,7 +47,9 @@ async function revisarLink(nombre, url) {
     tiene(/^BEGIN:VCARD\r\nVERSION:3\.0/, 'vCard válida (3.0)');
     tiene(new RegExp(`TEL;TYPE=CELL,VOICE:\\+52${a.telefono}`), 'vCard con teléfono');
     tiene(/^FN:.+/m, 'vCard con nombre');
-    !/^(ORG|TITLE|URL|NOTE|PHOTO)/m.test(vcf) ? ok('vCard solo con nombre y número') : mal('vCard con datos de más');
+    !/^(ORG|TITLE|NOTE|PHOTO)/m.test(vcf) ? ok('vCard con nombre, número y link') : mal('vCard con datos de más');
+    vcf.includes('URL:' + urlTarjeta) ? ok('vCard con link de la tarjeta') : mal('vCard sin link de la tarjeta');
+    for (const f of ['manifest.webmanifest', 'sw.js']) fs.existsSync(path.join(dir, f)) ? ok('existe ' + f) : mal('falta ' + f);
 
     // Links de los botones
     const html = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');

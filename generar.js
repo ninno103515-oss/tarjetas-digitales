@@ -80,6 +80,7 @@ function crearVCard(a, urlTarjeta, fotoBase64) {
     `TEL;TYPE=CELL,VOICE:+${telInternacional(a.telefono)}`
   ];
   if (soloDigitos(a.whatsapp) !== soloDigitos(a.telefono)) lineas.push(`TEL;TYPE=CELL:+${telInternacional(a.whatsapp)}`);
+  lineas.push(`URL:${urlTarjeta}`);
   lineas.push('END:VCARD');
   return lineas.map(doblar).join('\r\n') + '\r\n';
 }
@@ -198,6 +199,12 @@ async function generarAsesor(a) {
     ogImagen: escapar(ogImagen),
     fotoHtml,
     cuadros,
+    pwaHead: `<link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../icono-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="${escapar(a.nombreContacto || `${a.nombre} ${config.sitio.empresa}`)}">`,
     ayudaApp: a.numeroEmpleado ? `<p class="ayuda-app">Código de asesor para tu registro en la app: <button class="copiar-numero" type="button" data-copiar="${escapar(a.numeroEmpleado)}" aria-label="Copiar número ${escapar(a.numeroEmpleado)}">${escapar(a.numeroEmpleado)}<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg></button></p>` : '',
     tramite,
     productosHtml,
@@ -212,6 +219,31 @@ async function generarAsesor(a) {
   const htmlFinal = html.replace(/"(\.\.\/(?:estilos|estilos-compacta)\.css|\.\.\/tarjeta\.js)"/g, (_, archivo) => `"${archivo}?v=${version}"`);
   fs.writeFileSync(path.join(dir, 'index.html'), htmlFinal);
   fs.writeFileSync(path.join(dir, 'contacto.vcf'), crearVCard(a, urlTarjeta, fotoBase64));
+  // Para "Guardar tarjeta en mi celular": manifiesto (nombre e ícono) y service worker (abre sin internet)
+  const nombreApp = a.nombreContacto || `${a.nombre} ${config.sitio.empresa}`;
+  fs.writeFileSync(path.join(dir, 'manifest.webmanifest'), JSON.stringify({
+    name: nombreApp, short_name: nombreApp, start_url: './', scope: './', display: 'standalone',
+    background_color: '#0A0A0B', theme_color: '#0A0A0B', lang: 'es',
+    icons: [
+      { src: '../icono-192.png', sizes: '192x192', type: 'image/png' },
+      { src: '../icono-512.png', sizes: '512x512', type: 'image/png' },
+      { src: '../icono-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+    ]
+  }, null, 2));
+  const archivosCache = ['./', `../estilos.css?v=${version}`, `../tarjeta.js?v=${version}`, a.compacta ? `../estilos-compacta.css?v=${version}` : null,
+    'foto.jpg', 'contacto.vcf', '../logo-elektra.png', '../banco-azteca.png', '../sol-elektra.png',
+    ...['whatsapp.png', 'app-elektra.png', 'credito.png', 'ubicacion.png', 'compartir.png'].map((f) => `../iconos/${f}`),
+    ...Object.values(PRODUCTOS).filter((p) => p.imagen).map((p) => `../productos/${p.imagen}`)].filter(Boolean);
+  fs.writeFileSync(path.join(dir, 'sw.js'), [
+    '// Guarda la tarjeta en el celular para que abra aunque no haya internet',
+    `const CACHE = 'tarjeta-${a.ruta}-${version}';`,
+    `self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(${JSON.stringify(archivosCache)})).then(() => self.skipWaiting())); });`,
+    "self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });",
+    "// Primero internet (para ver siempre lo más nuevo); si no hay, lo guardado",
+    "self.addEventListener('fetch', (e) => {",
+    "  if (e.request.method !== 'GET') return;",
+    "  e.respondWith(fetch(e.request).then((r) => { const copia = r.clone(); if (r.ok && new URL(e.request.url).origin === location.origin) caches.open(CACHE).then((c) => c.put(e.request, copia)); return r; }).catch(() => caches.match(e.request, { ignoreSearch: true })));",
+    "});", ''].join('\n'));
 
   fs.mkdirSync(CARPETA_QR, { recursive: true });
   await crearQR(urlTarjeta, nombreCompleto.replace(/\s*\(EJEMPLO\)/, ''), path.join(dir, 'qr.png'), path.join(CARPETA_QR, `${a.ruta}.png`));
@@ -239,6 +271,12 @@ async function copiarComunes(destino) {
   for (const p of Object.values(PRODUCTOS)) if (p.imagen && fs.existsSync(path.join(RAIZ, 'recursos', 'productos', p.imagen))) fs.copyFileSync(path.join(RAIZ, 'recursos', 'productos', p.imagen), path.join(destino, 'productos', p.imagen));
   fs.mkdirSync(path.join(destino, 'iconos'), { recursive: true });
   for (const f of ['whatsapp.png', 'app-elektra.png', 'credito.png', 'ubicacion.png', 'compartir.png']) fs.copyFileSync(path.join(RAIZ, 'recursos', 'iconos', f), path.join(destino, 'iconos', f));
+  // Íconos de la tarjeta instalada en el celular: sol de Elektra sobre fondo negro
+  for (const [nombre, lado, sol] of [['icono-180.png', 180, 0.66], ['icono-192.png', 192, 0.66], ['icono-512.png', 512, 0.66], ['icono-512-maskable.png', 512, 0.5]]) {
+    const s = await sharp(path.join(RAIZ, 'recursos', 'sol-elektra.png')).resize({ width: Math.round(lado * sol) }).toBuffer();
+    const m = await sharp(s).metadata();
+    await sharp({ create: { width: lado, height: lado, channels: 4, background: '#0A0A0B' } }).composite([{ input: s, left: Math.round((lado - m.width) / 2), top: Math.round((lado - m.height) / 2) }]).png().toFile(path.join(destino, nombre));
+  }
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos.css'), path.join(destino, 'estilos.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'estilos-compacta.css'), path.join(destino, 'estilos-compacta.css'));
   fs.copyFileSync(path.join(RAIZ, 'plantilla', 'tarjeta.js'), path.join(destino, 'tarjeta.js'));

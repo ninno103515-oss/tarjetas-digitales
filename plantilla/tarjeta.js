@@ -58,6 +58,36 @@
     });
   }
 
+  // "Guardar tarjeta en mi celular": instala la tarjeta como app (Android) o explica cómo (iPhone)
+  var guardar = document.getElementById('guardar');
+  var instalada = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  var esIphone = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  var pedido = null;
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+  if (guardar && !instalada) {
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); pedido = e; guardar.hidden = false; });
+    if (esIphone) guardar.hidden = false;
+    var ayuda = document.createElement('div');
+    ayuda.className = 'menu-fondo';
+    ayuda.innerHTML = '<div class="menu-compartir" role="dialog" aria-modal="true" aria-label="Guardar tarjeta">' +
+      '<p class="menu-titulo">Guarda mi tarjeta en tu celular</p>' +
+      (esIphone
+        ? '<ol class="pasos"><li>Toca <strong>Compartir</strong> <span class="ico-paso">⬆️</span> abajo en Safari</li><li>Elige <strong>Agregar a inicio</strong> <span class="ico-paso">➕</span></li></ol>'
+        : '<ol class="pasos"><li>Toca el menú <strong>⋮</strong> del navegador</li><li>Elige <strong>Agregar a la pantalla principal</strong> o <strong>Instalar</strong></li></ol>') +
+      '<button class="menu-cerrar" type="button">Entendido</button></div>';
+    document.body.appendChild(ayuda);
+    ayuda.addEventListener('click', function (e) { if (e.target === ayuda || e.target.closest('.menu-cerrar')) ayuda.classList.remove('abierto'); });
+    guardar.addEventListener('click', function () {
+      if (pedido) {
+        pedido.prompt();
+        pedido.userChoice.then(function (r) { if (r.outcome === 'accepted') guardar.hidden = true; pedido = null; });
+      } else {
+        ayuda.classList.add('abierto');
+      }
+    });
+    window.addEventListener('appinstalled', function () { guardar.hidden = true; });
+  }
+
   // Menú propio (se arma una sola vez)
   var fondo = document.createElement('div');
   fondo.className = 'menu-fondo';

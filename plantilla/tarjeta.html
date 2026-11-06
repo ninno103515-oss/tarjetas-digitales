@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cinzel:wght@600;700&display=swap">
   <link rel="stylesheet" href="../estilos.css">
   {{estilosExtra}}
+  {{pwaHead}}
 </head>
 <body>
   <main class="tarjeta">
@@ -67,6 +68,8 @@
         <p>{{horario}}</p>
       </div>
     </section>
+
+    <button class="guardar-tarjeta" id="guardar" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M5 19.5h14"/></svg><span>Guardar tarjeta</span></button>
 
     <footer class="pie">{{sucursal}}</footer>
   </main>

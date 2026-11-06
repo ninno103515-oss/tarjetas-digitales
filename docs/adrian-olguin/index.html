@@ -17,8 +17,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cinzel:wght@600;700&display=swap">
-  <link rel="stylesheet" href="../estilos.css?v=805c5517">
-  <link rel="stylesheet" href="../estilos-compacta.css?v=805c5517">
+  <link rel="stylesheet" href="../estilos.css?v=8d9ce069">
+  <link rel="stylesheet" href="../estilos-compacta.css?v=8d9ce069">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../icono-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Adrián Elektra">
 </head>
 <body>
   <main class="tarjeta">
@@ -76,10 +82,12 @@
       </div>
     </section>
 
+    <button class="guardar-tarjeta" id="guardar" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M5 19.5h14"/></svg><span>Guardar tarjeta</span></button>
+
     <footer class="pie">Elektra Tláhuac del Mar</footer>
   </main>
 
   <div class="aviso-flotante" id="aviso" role="status" aria-live="polite"></div>
-  <script src="../tarjeta.js?v=805c5517"></script>
+  <script src="../tarjeta.js?v=8d9ce069"></script>
 </body>
 </html>

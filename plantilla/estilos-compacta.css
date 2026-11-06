@@ -140,3 +140,9 @@
 .cuadros { padding-top: 0; }
 .bloque { padding-top: 0; padding-bottom: 0; }
 .horario { margin-bottom: auto; }
+.guardar-tarjeta { padding: 4px 12px; font-size: 12px; }
+.guardar-tarjeta { font-size: 11.5px; }
+.guardar-tarjeta { font-size: 12.5px; padding-top: 9px; }
+/* El pie deja aire con la orilla inferior; el horario ya no empuja hacia abajo */
+.horario { margin-bottom: 0; }
+.guardar-tarjeta { margin-bottom: calc(12px + env(safe-area-inset-bottom)); }
